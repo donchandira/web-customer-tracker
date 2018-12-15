@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.chandira.springdemo.dao.CustomerDAO;
 import com.chandira.springdemo.entity.Customer;
 import com.chandira.springdemo.service.CustomerService;
 
@@ -33,5 +33,21 @@ public class CustomerController {
 		
 		return "list-customers";
 	}
-
+	
+	@GetMapping("/showFormForAdd")
+	public String showFormForAdd(Model model)
+	{
+		Customer customer = new Customer();
+		model.addAttribute("customer", customer);
+		return "customer-form";			
+	}
+	
+	@PostMapping("/saveCustomer")
+	public String saveCustomer(@ModelAttribute("customer") Customer customer)
+	{
+		// save the customer using the service
+		customerService.saveCustomer(customer);
+		
+		return "redirect:/customer/list";
+	}
 }
